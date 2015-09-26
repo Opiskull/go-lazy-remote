@@ -26,7 +26,7 @@ func setParameters(command *Command, request *http.Request) error {
 }
 
 // ShowInfo displays the info for the command
-func (c Routes) ShowInfo(command *Command) func(http.ResponseWriter, *http.Request) {
+func (c Routes) CommandInfo(command *Command) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Write(writeJSON(command))
 	}
@@ -46,8 +46,18 @@ func (c Routes) Execute(command *Command, executor *CommandExecutor) func(http.R
 }
 
 // ListCommands lists all commands
-func (c Routes) ListCommands(commands []*Command) func(http.ResponseWriter, *http.Request) {
+func (c Routes) ListCommandInfos(commands []*Command) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Write(writeJSON(commands))
+	}
+}
+
+func (c Routes) ListCommands(commands []*Command) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var list = []string{}
+		for _, command := range commands {
+			list = append(list, command.Route)
+		}
+		w.Write(writeJSON(list))
 	}
 }

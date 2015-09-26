@@ -28,6 +28,7 @@ func (c CommandService) registerCommands() {
 		c.registerCommand(command)
 	}
 	log.Println("List all commands with '/api/commands'")
+	goji.Get("/api/commands/info", routes.ListCommandInfos(c.commands))
 	goji.Get("/api/commands", routes.ListCommands(c.commands))
 }
 
@@ -36,7 +37,7 @@ func (c CommandService) registerCommand(command *Command) {
 	var route = "/api" + command.Route
 	log.Printf("Register Route %v", route)
 	goji.Handle(route, routes.Execute(command, c.executor))
-	goji.Get(route+"/definition", routes.ShowInfo(command))
+	goji.Get(route+"/info", routes.CommandInfo(command))
 }
 
 // Init and register all commands
