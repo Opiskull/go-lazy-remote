@@ -1,4 +1,5 @@
 {
+  "listen":":8000",
   "commands": [{
     "title": "start-vm",
     "parameters": [{

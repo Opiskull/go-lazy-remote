@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"net/http"
 
 	"github.com/zenazn/goji"
@@ -17,5 +18,7 @@ func main() {
 
 	goji.Use(JSONMiddleware)
 	service.Init()
+
+	flag.Set("bind", conf.Listen)
 	goji.Serve()
 }
