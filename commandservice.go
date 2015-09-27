@@ -3,13 +3,15 @@ package main
 import (
 	"log"
 
-	"github.com/zenazn/goji"
+	"github.com/opiskull/go-jsonapi"
+	"github.com/zenazn/goji/web"
 )
 
 // CommandService is used to register commands
 type CommandService struct {
 	executor *CommandExecutor
 	commands []*Command
+	Mux      *web.Mux
 }
 
 // NewCommandService creates a new instance
@@ -17,7 +19,9 @@ func NewCommandService(commands []*Command) *CommandService {
 	var service = &CommandService{
 		executor: &CommandExecutor{},
 		commands: commands,
+		Mux:      jsonapi.NewJSONSubRouterMux(),
 	}
+	service.registerCommands()
 	return service
 }
 
@@ -28,19 +32,13 @@ func (c CommandService) registerCommands() {
 		c.registerCommand(command)
 	}
 	log.Println("List all commands with '/api/commands'")
-	goji.Get("/api/commands/info", routes.ListCommandInfos(c.commands))
-	goji.Get("/api/commands", routes.ListCommands(c.commands))
+	c.Mux.Get("/commands/info", routes.ListCommandInfos(c.commands))
+	c.Mux.Get("/commands", routes.ListCommands(c.commands))
 }
 
 // RegisterCommand registers handlers for commands
 func (c CommandService) registerCommand(command *Command) {
-	var route = "/api" + command.Route
-	log.Printf("Register Route %v", route)
-	goji.Handle(route, routes.ExecuteCommand(command, c.executor))
-	goji.Get(route+"/info", routes.CommandInfo(command))
-}
-
-// Init and register all commands
-func (c CommandService) Init() {
-	c.registerCommands()
+	log.Printf("Register Route %v", "/api"+command.Route)
+	c.Mux.Handle(command.Route, routes.ExecuteCommand(command, c.executor))
+	c.Mux.Get(command.Route+"/info", routes.CommandInfo(command))
 }
