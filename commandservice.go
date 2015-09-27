@@ -36,7 +36,7 @@ func (c CommandService) registerCommands() {
 func (c CommandService) registerCommand(command *Command) {
 	var route = "/api" + command.Route
 	log.Printf("Register Route %v", route)
-	goji.Handle(route, routes.Execute(command, c.executor))
+	goji.Handle(route, routes.ExecuteCommand(command, c.executor))
 	goji.Get(route+"/info", routes.CommandInfo(command))
 }
 

@@ -1,5 +1,6 @@
 {
   "listen":":8000",
+  "staticfiles":"./static",
   "commands": [{
     "title": "start-vm",
     "parameters": [{

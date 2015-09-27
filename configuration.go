@@ -8,8 +8,9 @@ import (
 
 // Configuration for loading from JSON
 type Configuration struct {
-	Commands []*Command `json:"commands"`
-	Listen   string     `json:"listen"`
+	Commands    []*Command `json:"commands"`
+	Listen      string     `json:"listen"`
+	StaticFiles string     `json:"staticfiles"`
 }
 
 // LoadConfiguration from config.json file
@@ -25,6 +26,10 @@ func LoadConfiguration() *Configuration {
 	}
 	if len(conf.Listen) == 0 {
 		conf.Listen = ":8000"
+	}
+
+	if len(conf.StaticFiles) == 0 {
+		conf.StaticFiles = "./static"
 	}
 	return conf
 }

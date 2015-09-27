@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/opiskull/go-jsonapi"
 )
 
 // Routes is used to store all routes
@@ -25,39 +27,40 @@ func setParameters(command *Command, request *http.Request) error {
 	return nil
 }
 
-// ShowInfo displays the info for the command
+// CommandInfo displays the info for the command
 func (c Routes) CommandInfo(command *Command) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Write(writeJSON(command))
+		jsonapi.JSON.Write(w, command)
 	}
 }
 
-// Execute the command with the commandexecutor
-func (c Routes) Execute(command *Command, executor *CommandExecutor) func(http.ResponseWriter, *http.Request) {
+// ExecuteCommand the command with the commandexecutor
+func (c Routes) ExecuteCommand(command *Command, executor *CommandExecutor) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var com = *command
 		setParameters(&com, r)
 		if err := executor.Execute(&com); err != nil {
-			w.Write(writeJSONError(err))
+			jsonapi.JSON.Error(w, jsonapi.NewAppError(err))
 		} else {
-			w.Write(writeJSON(&com.Result))
+			jsonapi.JSON.Write(w, &com.Result)
 		}
 	}
 }
 
-// ListCommands lists all commands
+// ListCommandInfos lists all commands
 func (c Routes) ListCommandInfos(commands []*Command) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Write(writeJSON(commands))
+		jsonapi.JSON.Write(w, commands)
 	}
 }
 
+// ListCommands is for listing all loaded commands
 func (c Routes) ListCommands(commands []*Command) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var list = []string{}
 		for _, command := range commands {
 			list = append(list, command.Route)
 		}
-		w.Write(writeJSON(list))
+		jsonapi.JSON.Write(w, list)
 	}
 }
