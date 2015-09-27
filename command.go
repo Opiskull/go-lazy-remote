@@ -9,6 +9,8 @@ type Command struct {
 	Route       string            `json:"route"`
 	Result      interface{}       `json:"-"`
 	Description string            `json:"description"`
+	Type        string            `json:"type"`
+	Output      string            `json:"output"`
 }
 
 // Parameter is used to describe a parameter

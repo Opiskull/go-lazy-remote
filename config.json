@@ -9,6 +9,8 @@
     }, {
       "name": "ComputerName"
     }],
+    "type":"ps",
+    "output":"json",
     "route": "/hyper-v/start",
     "command": "Start-VM -Name {{.Name}} {{if .ComputerName}} -ComputerName {{.ComputerName}}{{end}}",
     "description": "Start a vm with this command"
@@ -20,6 +22,8 @@
     }, {
       "name": "ComputerName"
     }],
+    "type":"ps",
+    "output":"json",
     "route": "/hyper-v/stop",
     "command": "Stop-VM -Name {{.Name}} {{if .ComputerName}} -ComputerName {{.ComputerName}}{{end}}",
     "description": "Stop a vm with this command"
@@ -28,8 +32,17 @@
     "parameters": [{
       "name": "ComputerName"
     }],
+    "type":"ps",
+    "output":"json",
     "route": "/get-process",
     "command": "Get-Process {{if .ComputerName}} -ComputerName {{.ComputerName}}{{end}} | Select Name,Id",
     "description": "Get all running processes"
+  }, {
+    "title": "hostname",
+    "type":"cmd",
+    "output":"string",
+    "route": "/hostname",
+    "command": "hostname",
+    "description": "Get hostname of this computer"
   }]
 }

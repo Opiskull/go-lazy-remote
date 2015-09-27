@@ -30,7 +30,7 @@ func setParameters(command *Command, request *http.Request) error {
 // CommandInfo displays the info for the command
 func (c Routes) CommandInfo(command *Command) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		jsonapi.JSON.Write(w, command)
+		jsonapi.JSON.Write(w, &command)
 	}
 }
 
