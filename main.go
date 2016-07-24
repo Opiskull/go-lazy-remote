@@ -12,6 +12,7 @@ func main() {
 
 	watcher := startConfigWatcher()
 	defer watcher.Close()
+
 	e := echo.New()
 	g := e.Group("/api")
 	NewCommandService(conf.Commands, g)
