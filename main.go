@@ -1,20 +1,21 @@
 package main
 
 import (
-	"flag"
+	"log"
 
-	"github.com/zenazn/goji"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/engine/standard"
 )
 
 func main() {
 	conf := LoadConfiguration()
 
-	service := NewCommandService(conf.Commands)
-	goji.Handle("/api/*", service.Mux)
-
-	files := NewFileService(conf.StaticFiles)
-	goji.Handle("/*", files.Mux)
-
-	flag.Set("bind", conf.Listen)
-	goji.Serve()
+	watcher := startConfigWatcher()
+	defer watcher.Close()
+	e := echo.New()
+	g := e.Group("/api")
+	NewCommandService(conf.Commands, g)
+	e.Static("/", conf.StaticFiles)
+	log.Println("Listening on:" + conf.Listen)
+	e.Run(standard.New(conf.Listen))
 }
