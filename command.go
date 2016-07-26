@@ -2,15 +2,15 @@ package main
 
 // Command basic structure
 type Command struct {
-	Parameters  []Parameter       `json:"parameters"`
-	Values      map[string]string `json:"-"`
 	Title       string            `json:"title"`
-	Command     string            `json:"command"`
-	Route       string            `json:"route"`
-	Result      interface{}       `json:"-"`
 	Description string            `json:"description"`
+	Route       string            `json:"route"`
+	Parameters  []Parameter       `json:"parameters,omitempty"`
+	Command     string            `json:"command"`
 	Type        string            `json:"type"`
 	Output      string            `json:"output"`
+	Values      map[string]string `json:"-"`
+	Result      interface{}       `json:"-"`
 }
 
 // Parameter is used to describe a parameter
