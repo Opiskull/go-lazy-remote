@@ -4,13 +4,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
+
+	"github.com/labstack/echo/middleware"
 )
 
 // Configuration for loading from JSON
 type Configuration struct {
-	Listen             string `json:"listen"`
-	StaticFilesFolder  string `json:"staticFilesFolder"`
-	CommandFilesFolder string `json:"commandFilesFolder"`
+	Listen             string                `json:"listen"`
+	StaticFilesFolder  string                `json:"staticFilesFolder"`
+	CommandFilesFolder string                `json:"commandFilesFolder"`
+	Cors               middleware.CORSConfig `json:"cors"`
 }
 
 // LoadConfiguration from config.json file

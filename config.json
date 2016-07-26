@@ -1,5 +1,8 @@
 {
   "listen": ":8000",
   "staticFilesFolder": "./static",
-  "commandFilesFolder": "./commands"
+  "commandFilesFolder": "./commands",
+  "cors":{
+    "allow_origins":["http://localhost:8000"]
+  }
 }
