@@ -1,7 +1,9 @@
 package main
 
 import (
+	"io"
 	"log"
+	"os"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
@@ -10,9 +12,11 @@ import (
 
 func main() {
 	conf := LoadConfiguration()
+
+	defer initLogging(conf)()
+	
 	watcher := startConfigWatcher()
 	defer watcher.Close()
-
 	e := echo.New()
 
 	e.Use(middleware.Logger())
@@ -25,4 +29,19 @@ func main() {
 	e.Static("/", conf.StaticFilesFolder)
 	log.Println("Listening on:" + conf.Listen)
 	e.Run(standard.New(conf.Listen))
+}
+
+func initLogging(conf *Configuration) func() {
+	f, err := os.OpenFile(conf.LogFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	log.Print("Logging to " + conf.LogFileName)
+	multi := io.MultiWriter(f, os.Stdout)
+	log.SetOutput(multi)
+	return func() {
+		if f != nil {
+			f.Close()
+		}
+	}
 }

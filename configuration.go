@@ -14,6 +14,7 @@ type Configuration struct {
 	StaticFilesFolder  string                `json:"staticFilesFolder"`
 	CommandFilesFolder string                `json:"commandFilesFolder"`
 	Cors               middleware.CORSConfig `json:"cors"`
+	LogFileName        string                `json:"logFileName"`
 }
 
 // LoadConfiguration from config.json file

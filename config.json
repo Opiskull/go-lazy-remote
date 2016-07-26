@@ -4,5 +4,6 @@
   "commandFilesFolder": "./commands",
   "cors":{
     "allow_origins":["http://localhost:8000"]
-  }
+  },
+  "logFileName":"go-lazy-remote.log"
 }
