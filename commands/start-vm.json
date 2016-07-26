@@ -1,0 +1,17 @@
+{
+    "title": "start-vm",
+    "parameters": [
+        {
+            "name": "Name",
+            "mandatory": true
+        },
+        {
+            "name": "ComputerName"
+        }
+    ],
+    "type": "ps",
+    "output": "json",
+    "route": "/hyper-v/start",
+    "command": "Start-VM -Name {{.Name}} {{if .ComputerName}} -ComputerName {{.ComputerName}}{{end}}",
+    "description": "Start a vm with this command"
+}

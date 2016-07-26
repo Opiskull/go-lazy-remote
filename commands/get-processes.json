@@ -1,0 +1,13 @@
+{
+    "title": "get-processes",
+    "parameters": [
+        {
+            "name": "ComputerName"
+        }
+    ],
+    "type": "ps",
+    "output": "json",
+    "route": "/get-processes",
+    "command": "Get-Process {{if .ComputerName}} -ComputerName {{.ComputerName}}{{end}} | Select Name,Id",
+    "description": "Get all running processes"
+}

@@ -15,8 +15,8 @@ func main() {
 
 	e := echo.New()
 	g := e.Group("/api")
-	NewCommandService(conf.Commands, g)
-	e.Static("/", conf.StaticFiles)
+	NewCommandService(conf.CommandFilesFolder, g)
+	e.Static("/", conf.StaticFilesFolder)
 	log.Println("Listening on:" + conf.Listen)
 	e.Run(standard.New(conf.Listen))
 }

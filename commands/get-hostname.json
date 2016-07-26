@@ -1,0 +1,8 @@
+{
+    "title": "get-hostname",
+    "type": "cmd",
+    "output": "string",
+    "route": "/get-hostname",
+    "command": "hostname",
+    "description": "Get hostname of this computer"
+}

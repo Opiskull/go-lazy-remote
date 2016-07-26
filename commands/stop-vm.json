@@ -1,0 +1,17 @@
+{
+    "title": "stop-vm",
+    "parameters": [
+        {
+            "name": "Name",
+            "mandatory": true
+        },
+        {
+            "name": "ComputerName"
+        }
+    ],
+    "type": "ps",
+    "output": "json",
+    "route": "/hyper-v/stop",
+    "command": "Stop-VM -Name {{.Name}} {{if .ComputerName}} -ComputerName {{.ComputerName}}{{end}}",
+    "description": "Stop a vm with this command"
+}
