@@ -6,7 +6,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func startConfigWatcher() *fsnotify.Watcher {
+func startFileWatcher(file string) *fsnotify.Watcher {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
@@ -25,10 +25,17 @@ func startConfigWatcher() *fsnotify.Watcher {
 			}
 		}
 	}()
-	err = watcher.Add("config.json")
+	err = watcher.Add(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return watcher
+}
+
+func initConfigWatcher() func() {
+	watcher := startFileWatcher("config.json")
+	return func() {
+		watcher.Close()
+	}
 }

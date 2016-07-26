@@ -14,9 +14,8 @@ func main() {
 	conf := LoadConfiguration()
 
 	defer initLogging(conf)()
+	defer initConfigWatcher()()
 	
-	watcher := startConfigWatcher()
-	defer watcher.Close()
 	e := echo.New()
 
 	e.Use(middleware.Logger())
