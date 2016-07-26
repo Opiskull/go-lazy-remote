@@ -27,18 +27,3 @@ func main() {
 	log.Println("Listening on:" + viper.GetString(ConfListen))
 	e.Run(standard.New(viper.GetString(ConfListen)))
 }
-
-func initLogging(conf *Configuration) func() {
-	f, err := os.OpenFile(conf.LogFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("error opening file: %v", err)
-	}
-	log.Print("Logging to " + conf.LogFileName)
-	multi := io.MultiWriter(f, os.Stdout)
-	log.SetOutput(multi)
-	return func() {
-		if f != nil {
-			f.Close()
-		}
-	}
-}
